@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String   @unique
+  password  String
+  role      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  driver     Driver?
+  clientRides Ride[]   @relation("ClientRides")
+  clientCourses Course[] @relation("ClientCourses")
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+model Driver {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @unique @map("user_id")
+  carModel     String? @map("car_model")
+  licensePlate String?  @unique @map("license_plate")
+  isAvailable  Boolean  @default(true) @map("is_available")
+  latitude     Float?
+  longitude    Float?
+  lastLocationUpdate DateTime? @updatedAt @map("last_location_update")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  driverRides  Ride[]   @relation("DriverRides")
+  driverCourses Course[] @relation("DriverCourses")
+
+  @@map("drivers")
+}
+
+model Ride {
+  id          Int       @id @default(autoincrement())
+  clientId    Int       @map("client_id")
+  driverId    Int?      @map("driver_id")
+  pickupLat   Float     @map("pickup_lat")
+  pickupLng   Float     @map("pickup_lng")
+  dropoffLat  Float     @map("dropoff_lat")
+  dropoffLng  Float     @map("dropoff_lng")
+  status      String    @default("waiting")
+  price       Float?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  startedAt   DateTime? @map("started_at")
+  completedAt DateTime? @map("completed_at")
+
+  // Relations
+  client      User      @relation("ClientRides", fields: [clientId], references: [id], onDelete: Cascade)
+  driver      Driver?   @relation("DriverRides", fields: [driverId], references: [id], onDelete: SetNull)
+
+  @@map("rides")
+}
+
+model Course {
+  id       Int      @id @default(autoincrement())
+  clientId Int      @map("client_id")
+  driverId Int?     @map("driver_id")
+  depart   String
+  arrivee  String
+  statut   String   @default("en attente")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  client   User     @relation("ClientCourses", fields: [clientId], references: [id], onDelete: Cascade)
+  driver   Driver?  @relation("DriverCourses", fields: [driverId], references: [id], onDelete: SetNull)
+
+  @@map("courses")
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String
+  userId    Int      @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}

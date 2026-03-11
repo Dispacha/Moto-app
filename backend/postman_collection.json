@@ -1,0 +1,67 @@
+{
+  "info": {
+    "name": "Moto App API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Collection de tests pour l'API backend (register, login, refresh, logout, drivers, courses)"
+  },
+  "item": [
+    {
+      "name": "Register User",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"name\": \"Client Test\",\n  \"phone\": \"0699123456\",\n  \"password\": \"password\",\n  \"role\": \"client\"\n}" },
+        "url": { "raw": "http://localhost:5000/api/users/register", "host": ["http://localhost:5000"], "path": ["api","users","register"] }
+      }
+    },
+    {
+      "name": "Login User",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"phone\": \"0699123456\",\n  \"password\": \"password\"\n}" },
+        "url": { "raw": "http://localhost:5000/api/users/login", "host": ["http://localhost:5000"], "path": ["api","users","login"] }
+      }
+    },
+    {
+      "name": "Refresh Token",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:5000/api/auth/refresh", "host": ["http://localhost:5000"], "path": ["api","auth","refresh"] }
+      }
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:5000/api/auth/logout", "host": ["http://localhost:5000"], "path": ["api","auth","logout"] }
+      }
+    },
+    {
+      "name": "Create Course (Auth)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{access_token}}" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"depart\": \"Point A\",\n  \"arrivee\": \"Point B\"\n}" },
+        "url": { "raw": "http://localhost:5000/api/courses/create", "host": ["http://localhost:5000"], "path": ["api","courses","create"] }
+      }
+    },
+    {
+      "name": "Register Driver (Auth)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{access_token}}" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"car_model\": \"Yamaha X\",\n  \"license_plate\": \"ABC123\"\n}" },
+        "url": { "raw": "http://localhost:5000/api/drivers/register", "host": ["http://localhost:5000"], "path": ["api","drivers","register"] }
+      }
+    }
+  ]
+}

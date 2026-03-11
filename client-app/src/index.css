@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply scroll-smooth;
+}
+
+html {
+  @apply scroll-smooth;
+}
+
+body {
+  @apply font-sans bg-neutral text-dark;
+}
+
+/* Animation personnalisée */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-up {
+  @apply animate-[slideInUp_0.5s_ease-out];
+}
+
+.animate-fade-in {
+  @apply animate-[fadein_0.5s_ease-out];
+}
+
+/* Boutons personnalisés */
+.btn-primary {
+  @apply bg-gradient-to-r from-primary to-red-600 text-white font-bold py-3 px-6 rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105;
+}
+
+.btn-secondary {
+  @apply bg-secondary text-white font-bold py-3 px-6 rounded-lg hover:shadow-lg transition-all duration-300;
+}
+
+.btn-outline {
+  @apply border-2 border-primary text-primary font-bold py-3 px-6 rounded-lg hover:bg-primary hover:text-white transition-all duration-300;
+}
+
+/* Cartes */
+.card {
+  @apply bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6;
+}
+
+.card-lg {
+  @apply bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 p-8;
+}
+
+/* Input personnalisé */
+.input-primary {
+  @apply w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors duration-200;
+}
+
+/* Textes */
+.text-gradient {
+  @apply bg-gradient-to-r from-primary to-red-600 bg-clip-text text-transparent;
+}
+
+/* Badge */
+.badge {
+  @apply inline-block px-3 py-1 rounded-full text-sm font-semibold;
+}
+
+.badge-primary {
+  @apply badge bg-primary bg-opacity-10 text-primary;
+}
+
+.badge-success {
+  @apply badge bg-green-100 text-green-800;
+}
+
+.badge-warning {
+  @apply badge bg-yellow-100 text-yellow-800;
+}
+
+.badge-danger {
+  @apply badge bg-red-100 text-red-800;
+}
+
+/* Loader */
+.spinner {
+  @apply w-8 h-8 border-4 border-gray-200 border-t-primary rounded-full animate-spin;
+}
