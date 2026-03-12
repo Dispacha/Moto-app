@@ -14,4 +14,11 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-module.exports = { verifyToken };
+// Vérifier que l'utilisateur est admin
+const verifyAdmin = (req, res, next) => {
+  if (!req.user) return res.status(401).json({ message: "Token manquant" });
+  if (req.user.role !== 'admin') return res.status(403).json({ message: "Accès refusé" });
+  next();
+};
+
+module.exports = { verifyToken, verifyAdmin };

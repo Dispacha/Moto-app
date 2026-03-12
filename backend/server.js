@@ -5,16 +5,18 @@ const cookieParser = require("cookie-parser");
 const http = require('http');
 const socketIo = require('socket.io');
 const db = require("./config/db");         // connexion Prisma
-console.log("DB chargé");
+// console.log("DB chargé");
 const userRoutes = require("./routes/userRoutes");  // routes utilisateur
 const driverRoutes = require("./routes/driverRoutes");  // routes conducteurs
 const rideRoutes = require("./routes/rideRoutes");  // routes courses
 const courseRoutes = require("./routes/courseRoutes");
 const authRoutes = require("./routes/authRoutes");
 const { errorHandler } = require("./middleware/errorMiddleware");
-console.log("Routes chargées");
-
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./swagger");
 const app = express();
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// console.log("Routes chargées");
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {

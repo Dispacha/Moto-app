@@ -8,7 +8,7 @@ const validateRegisterUser = (req, res, next) => {
   // Accept only Cameroon phone numbers
   const cleanPhone = phone?.replace(/\s/g, '') || '';
   if (!phone || typeof phone !== 'string' || !/^(\+237|237|0)[1-9]\d{7,8}$/.test(cleanPhone)) {
-    return res.status(400).json({ message: "Numéro de téléphone camerounais valide requis (ex: +237699123456, 0699123456)" });
+    return res.status(400).json({ message: "Numéro de téléphone camerounais valide requis (ex: +237699123456, 699123456)" });
   }
 
   if (!password || typeof password !== 'string' || password.length < 6) {
