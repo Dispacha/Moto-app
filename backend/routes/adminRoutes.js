@@ -1,102 +1,106 @@
 const express = require("express");
 const router = express.Router();
 const { verifyToken, verifyAdmin } = require("../middleware/authMiddleware");
-const adminController = require("../controllers/adminController");
+const db = require("../config/db"); // Prisma client
+
 
 /**
  * @swagger
  * tags:
  *   name: Admin
- *   description: Routes pour administrateur
+ *   description: Gestion administrative
  */
 
-// GET tous les utilisateurs
 /**
  * @swagger
  * /api/admin/users:
  *   get:
+ *     summary: Liste tous les utilisateurs
  *     tags: [Admin]
- *     summary: Lister tous les utilisateurs
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Liste utilisateurs
+ *         description: Liste des utilisateurs
  */
-router.get("/users", verifyToken, verifyAdmin, adminController.getAllUsers);
+router.get("/users", verifyToken, verifyAdmin, async (req, res, next) => {
+  try {
+    const users = await db.user.findMany({
+      include: { driver: true, clientRides: true, clientCourses: true },
+    });
+    res.json(users);
+  } catch (err) {
+    next(err);
+  }
+});
 
-// GET tous les conducteurs
 /**
  * @swagger
  * /api/admin/drivers:
  *   get:
+ *     summary: Liste tous les conducteurs
  *     tags: [Admin]
- *     summary: Lister tous les conducteurs
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Liste conducteurs
+ *         description: Liste des conducteurs
  */
-router.get("/drivers", verifyToken, verifyAdmin, adminController.getAllDrivers);
+router.get("/drivers", verifyToken, verifyAdmin, async (req, res, next) => {
+  try {
+    const drivers = await db.driver.findMany({
+      include: { user: true, driverRides: true, driverCourses: true },
+    });
+    res.json(drivers);
+  } catch (err) {
+    next(err);
+  }
+});
 
-// GET toutes les courses
 /**
  * @swagger
  * /api/admin/courses:
  *   get:
+ *     summary: Liste toutes les courses
  *     tags: [Admin]
- *     summary: Lister toutes les courses
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Liste courses
+ *         description: Liste des courses
  */
-router.get("/courses", verifyToken, verifyAdmin, adminController.getAllCourses);
+router.get("/courses", verifyToken, verifyAdmin, async (req, res, next) => {
+  try {
+    const courses = await db.course.findMany({
+      include: { client: true, driver: true },
+    });
+    res.json(courses);
+  } catch (err) {
+    next(err);
+  }
+});
 
-// DELETE un utilisateur
 /**
  * @swagger
- * /api/admin/users/{id}:
- *   delete:
+ * /api/admin/rides:
+ *   get:
+ *     summary: Liste toutes les rides
  *     tags: [Admin]
- *     summary: Supprimer un utilisateur
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID de l'utilisateur à supprimer
  *     responses:
  *       200:
- *         description: Utilisateur supprimé
+ *         description: Liste des rides
  */
-router.delete("/users/:id", verifyToken, verifyAdmin, adminController.deleteUser);
-
-// DELETE un conducteur
-/**
- * @swagger
- * /api/admin/drivers/{id}:
- *   delete:
- *     tags: [Admin]
- *     summary: Supprimer un conducteur
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID du conducteur à supprimer
- *     responses:
- *       200:
- *         description: Conducteur supprimé
- */
-router.delete("/drivers/:id", verifyToken, verifyAdmin, adminController.deleteDriver);
+router.get("/rides", verifyToken, verifyAdmin, async (req, res, next) => {
+  try {
+    const rides = await db.ride.findMany({
+      include: { client: true, driver: true },
+    });
+    res.json(rides);
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = router;

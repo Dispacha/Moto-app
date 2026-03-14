@@ -20,11 +20,11 @@ console.log("enregistrement des routes /register et /login");
  *           schema:
  *             type: object
  *             required:
- *               - email
+ *               - phone
  *               - password
  *               - role
  *             properties:
- *               email:
+ *               phone:
  *                 type: string
  *               password:
  *                 type: string
@@ -50,10 +50,10 @@ router.post("/register", validateRegisterUser, registerUser)
  *           schema:
  *             type: object
  *             required:
- *               - email
+ *               - phone
  *               - password
  *             properties:
- *               email:
+ *               phone:
  *                 type: string
  *               password:
  *                 type: string

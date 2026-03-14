@@ -21,12 +21,12 @@ const { validateDriverRegistration, validateDriverStatusUpdate } = require("../m
  *             type: object
  *             required:
  *               - name
- *               - email
+ *               - phone
  *               - password
  *             properties:
  *               name:
  *                 type: string
- *               email:
+ *               phone:
  *                 type: string
  *               password:
  *                 type: string
