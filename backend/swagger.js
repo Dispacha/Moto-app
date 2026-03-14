@@ -9,9 +9,8 @@ const options = {
       description: "API de mise en relation client et moto-taximan"
     },
     servers: [
-      {
-        url: "http://localhost:5000" // URL de ton serveur backend
-      }
+      {url: "https://moto-app-qk7f.onrender.com",}
+      // { url: "http://localhost:5000" }
     ],
     components: {
       securitySchemes: {
@@ -21,11 +20,11 @@ const options = {
           bearerFormat: "JWT"
         }
       }
-    }
+    },
+    security: [{ bearerAuth: [] }]
   },
-  apis: ["./routes/*.js"] // chemin vers tes fichiers de routes
+  apis: ["./routes/*.js"]
 };
 
 const swaggerSpec = swaggerJsdoc(options);
-
 module.exports = swaggerSpec;
